@@ -5,7 +5,7 @@ import "time"
 type Address struct {
 	ID      int    `gorm:"column:addr_id;primaryKey;autoIncrement;unique;not null;"`
 	AddrPID string `gorm:"column:addr_pid;type: varchar(50);not null;unique;"`
-	UserPID string `gorm:"column:user_pid;type: varchar(50);not null;unique;"`
+	UserPID string `gorm:"column:user_pid;type: varchar(50);"`
 	Name    string `gorm:"column:name;type: varchar(50);"`
 	// Location
 	PinCode   string `gorm:"column:pincode;type: varchar(10);"`
