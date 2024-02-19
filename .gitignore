@@ -3,6 +3,7 @@
 #
 # Binaries for programs and plugins
 *.exe
+*.env
 *.exe~
 *.dll
 *.so
@@ -15,7 +16,7 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 
 # Go workspace file
 go.work

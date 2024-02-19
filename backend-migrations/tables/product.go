@@ -7,10 +7,10 @@ type Product struct {
 	ProductPID    string  `gorm:"column:product_pid;type: varchar(50);not null;unique;"`
 	UserPID       string  `gorm:"column:user_pid;type: varchar(50);not null;unique;"`
 	Name          string  `gorm:"column:product_name;type: varchar(50);"`
-	Price         float64 `gorm:"column:product_price;type: float64;"` // ??
+	Price         float64 `gorm:"column:product_price;type: float;"` // ??
 	Category      string  `gorm:"column:product_category;type: varchar(50);"`
 	Stock         int     `gorm:"column:product_stock;"`
-	Rating        float64 `gorm:"column:product_rating;"` //
+	Rating        float64 `gorm:"column:product_rating;type: float"` //
 	NumberReviews int     `gorm:"column:product_number_reviews;"`
 	IsDeleted     bool    `gorm:"column:is_deleted;type: bool;default: false"`
 	CreatedAt     time.Time
