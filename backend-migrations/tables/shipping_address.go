@@ -21,3 +21,5 @@ type Address struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+// a user can have at max 5 shipping address (check this limit can be added via db or not)
