@@ -1,0 +1,19 @@
+complete backend migrations and backend repo hosting of atleast one api, then it will be easy
+
+I have a fear of exploring, new technologies
+
+Inorder to start I can just create the docker-image, this will
+My goal till Monday is, there should be a presentable project
+
+start with auth_module
+
+TODO: 
+ complete wallet migrations
+ start with auth module and token should be stored in redis
+ and user_module and a docker file should also be created for it
+
+ and should server should be made with net/http module
+
+
+
+setup jenkins for your local project

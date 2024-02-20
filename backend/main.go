@@ -1,11 +1,14 @@
 package main
 
-import "fmt"
-
-func init() {
-	fmt.Println("in init block..")
-}
+import (
+	"backend-commerce/app"
+	"backend-commerce/configs"
+	"backend-commerce/database"
+)
 
 func main() {
-	fmt.Println("in main block..")
+	configs.LoadConfigs()
+	// TODO: initalize redis as well
+	database.InitDB()
+	app.InitRoutes()
 }
