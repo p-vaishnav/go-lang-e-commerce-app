@@ -1,181 +1,193 @@
 package verifications
 
-// /* -------------------------------------------------------------------------- */
-// /*                          TestCreateOTPVerification                         */
-// /* -------------------------------------------------------------------------- */
-// func TestCreateOTPVerification(t *testing.T) {
-// 	configs.LoadConfigs()
-// 	var otpVer entities.OTPVerifications
-// 	var err error
+import (
+	"backend-commerce/configs"
+	"backend-commerce/constants"
+	"backend-commerce/database"
+	"backend-commerce/entities"
+	"net/http/httptest"
+	"testing"
 
-// 	otpVer.CountryCode = "91"
-// 	otpVer.Mobile = "9834649878"
-// 	otpVer.Medium = "whatsapp"
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
+)
 
-// 	w := httptest.NewRecorder()
-// 	c, _ := gin.CreateTestContext(w)
+/* -------------------------------------------------------------------------- */
+/*                          TestCreateOTPVerification                         */
+/* -------------------------------------------------------------------------- */
+func TestCreateOTPVerification(t *testing.T) {
+	configs.LoadConfigs()
+	var otpVer entities.OTPVerifications
+	var err error
 
-// 	gormDB, _ := database.Connection()
-// 	g := Gorm(gormDB)
+	otpVer.CountryCode = "91"
+	otpVer.Mobile = "9834649878"
+	otpVer.Medium = "whatsapp"
 
-// 	otpVer, err = g.CreateOTPVerification(c, otpVer)
-// 	assert.Empty(t, err)
-// 	assert.NotEmpty(t, otpVer.PID)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 
-// 	t.Cleanup(func() {
-// 		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer.PID).Delete(&otpVer)
-// 	})
-// }
+	gormDB, _ := database.InitDB()
+	g := Gorm(gormDB)
 
-// /* -------------------------------------------------------------------------- */
-// /*                             FindOTPVerification                            */
-// /* -------------------------------------------------------------------------- */
-// func TestFindOTPVerificationMobile(t *testing.T) {
-// 	configs.LoadConfigs()
-// 	var otpVer1 entities.OTPVerifications
-// 	var mobile string
-// 	var err error
+	otpVer, err = g.CreateOTPVerification(c, otpVer)
+	assert.Empty(t, err)
+	assert.NotEmpty(t, otpVer.PID)
 
-// 	mobile = "9834649111"
+	t.Cleanup(func() {
+		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer.PID).Delete(&otpVer)
+	})
+}
 
-// 	otpVer1.CountryCode = "91"
-// 	otpVer1.Mobile = mobile
-// 	otpVer1.Status = constants.OTP_STATUS.PENDING
-// 	otpVer1.Medium = "whatsapp"
-// 	otpVer1.Provider = "wati"
+/* -------------------------------------------------------------------------- */
+/*                             FindOTPVerification                            */
+/* -------------------------------------------------------------------------- */
+func TestFindOTPVerificationMobile(t *testing.T) {
+	configs.LoadConfigs()
+	var otpVer1 entities.OTPVerifications
+	var mobile string
+	var err error
 
-// 	w := httptest.NewRecorder()
-// 	c, _ := gin.CreateTestContext(w)
+	mobile = "9834649111"
 
-// 	gormDB, _ := database.Connection()
-// 	g := Gorm(gormDB)
+	otpVer1.CountryCode = "91"
+	otpVer1.Mobile = mobile
+	otpVer1.Status = constants.OTP_STATUS.PENDING
+	otpVer1.Medium = "whatsapp"
+	otpVer1.Provider = "wati"
 
-// 	otpVer1, err = g.CreateOTPVerification(c, otpVer1)
-// 	assert.Empty(t, err)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 
-// 	var otpVer2 entities.OTPVerifications
+	gormDB, _ := database.InitDB()
+	g := Gorm(gormDB)
 
-// 	otpVer2.CountryCode = "44"
-// 	otpVer2.Mobile = mobile
-// 	otpVer2.Status = constants.OTP_STATUS.PENDING
-// 	otpVer2.Medium = "whatsapp"
-// 	otpVer2.Provider = "meta"
+	otpVer1, err = g.CreateOTPVerification(c, otpVer1)
+	assert.Empty(t, err)
 
-// 	otpVer2, err = g.CreateOTPVerification(c, otpVer2)
-// 	assert.Empty(t, err)
+	var otpVer2 entities.OTPVerifications
 
-// 	res, err := g.FindOTPVerification(c, mobile, "", constants.OTP_STATUS.PENDING, "whatsapp")
-// 	assert.Empty(t, err)
-// 	assert.Equal(t, res.Provider, "meta")
+	otpVer2.CountryCode = "44"
+	otpVer2.Mobile = mobile
+	otpVer2.Status = constants.OTP_STATUS.PENDING
+	otpVer2.Medium = "whatsapp"
+	otpVer2.Provider = "meta"
 
-// 	t.Cleanup(func() {
-// 		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer1.PID).Delete(&otpVer1)
-// 		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer2.PID).Delete(&otpVer2)
-// 	})
-// }
+	otpVer2, err = g.CreateOTPVerification(c, otpVer2)
+	assert.Empty(t, err)
 
-// func TestFindOTPVerificationEmail(t *testing.T) {
-// 	configs.Loadconfigs()
-// 	var otpVer1 entities.OTPVerifications
-// 	var email string
-// 	var err error
+	res, err := g.FindOTPVerification(c, mobile, "", constants.OTP_STATUS.PENDING, "whatsapp")
+	assert.Empty(t, err)
+	assert.Equal(t, res.Provider, "meta")
 
-// 	email = "vaishnav@zoop.one"
+	t.Cleanup(func() {
+		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer1.PID).Delete(&otpVer1)
+		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer2.PID).Delete(&otpVer2)
+	})
+}
 
-// 	otpVer1.Email = email
-// 	otpVer1.Status = constants.OTP_STATUS.PENDING
-// 	otpVer1.Medium = "email"
-// 	otpVer1.Provider = "send-grid"
+func TestFindOTPVerificationEmail(t *testing.T) {
+	configs.LoadConfigs()
+	var otpVer1 entities.OTPVerifications
+	var email string
+	var err error
 
-// 	w := httptest.NewRecorder()
-// 	c, _ := gin.CreateTestContext(w)
+	email = "vaishnav@zoop.one"
 
-// 	gormDB, _ := database.Connection()
-// 	g := Gorm(gormDB)
+	otpVer1.Email = email
+	otpVer1.Status = constants.OTP_STATUS.PENDING
+	otpVer1.Medium = "email"
+	otpVer1.Provider = "send-grid"
 
-// 	otpVer1, err = g.CreateOTPVerification(c, otpVer1)
-// 	assert.Empty(t, err)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 
-// 	var otpVer2 entities.OTPVerifications
+	gormDB, _ := database.InitDB()
+	g := Gorm(gormDB)
 
-// 	otpVer2.Email = email
-// 	otpVer2.Status = constants.OTP_STATUS.PENDING
-// 	otpVer2.Medium = "email"
-// 	otpVer2.Provider = "ses"
+	otpVer1, err = g.CreateOTPVerification(c, otpVer1)
+	assert.Empty(t, err)
 
-// 	otpVer2, err = g.CreateOTPVerification(c, otpVer2)
-// 	assert.Empty(t, err)
+	var otpVer2 entities.OTPVerifications
 
-// 	res, err := g.FindOTPVerification(c, "", email, constants.OTP_STATUS.PENDING, "email")
-// 	assert.Empty(t, err)
-// 	assert.Equal(t, res.Provider, "ses")
+	otpVer2.Email = email
+	otpVer2.Status = constants.OTP_STATUS.PENDING
+	otpVer2.Medium = "email"
+	otpVer2.Provider = "ses"
 
-// 	t.Cleanup(func() {
-// 		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer1.PID).Delete(&otpVer1)
-// 		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer2.PID).Delete(&otpVer2)
-// 	})
-// }
+	otpVer2, err = g.CreateOTPVerification(c, otpVer2)
+	assert.Empty(t, err)
 
-// /* -------------------------------------------------------------------------- */
-// /*                        TestFindOTPVerificationByPID                        */
-// /* -------------------------------------------------------------------------- */
-// func TestFindOTPVerificationByPID(t *testing.T) {
-// 	configs.Loadconfigs()
-// 	var otpVer entities.OTPVerifications
-// 	var err error
+	res, err := g.FindOTPVerification(c, "", email, constants.OTP_STATUS.PENDING, "email")
+	assert.Empty(t, err)
+	assert.Equal(t, res.Provider, "ses")
 
-// 	otpVer.CountryCode = "91"
-// 	otpVer.Mobile = "9834649878"
-// 	otpVer.Medium = "whatsapp"
+	t.Cleanup(func() {
+		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer1.PID).Delete(&otpVer1)
+		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer2.PID).Delete(&otpVer2)
+	})
+}
 
-// 	w := httptest.NewRecorder()
-// 	c, _ := gin.CreateTestContext(w)
+/* -------------------------------------------------------------------------- */
+/*                        TestFindOTPVerificationByPID                        */
+/* -------------------------------------------------------------------------- */
+func TestFindOTPVerificationByPID(t *testing.T) {
+	configs.LoadConfigs()
+	var otpVer entities.OTPVerifications
+	var err error
 
-// 	gormDB, _ := database.Connection()
-// 	g := Gorm(gormDB)
+	otpVer.CountryCode = "91"
+	otpVer.Mobile = "9834649878"
+	otpVer.Medium = "whatsapp"
 
-// 	otpVer, err = g.CreateOTPVerification(c, otpVer)
-// 	assert.Empty(t, err)
-// 	assert.NotEmpty(t, otpVer.PID)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 
-// 	res, err := g.FindOTPVerificationByPID(c, otpVer.PID)
-// 	assert.Empty(t, err)
-// 	assert.Equal(t, res.PID, otpVer.PID)
+	gormDB, _ := database.InitDB()
+	g := Gorm(gormDB)
 
-// 	t.Cleanup(func() {
-// 		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer.PID).Delete(&otpVer)
-// 	})
-// }
+	otpVer, err = g.CreateOTPVerification(c, otpVer)
+	assert.Empty(t, err)
+	assert.NotEmpty(t, otpVer.PID)
 
-// /* -------------------------------------------------------------------------- */
-// /*                          UpdateOTPVerification                         */
-// /* -------------------------------------------------------------------------- */
-// func TestUpdateOTPVerification(t *testing.T) {
-// 	configs.Loadconfigs()
-// 	var otpVer entities.OTPVerifications
-// 	var err error
+	res, err := g.FindOTPVerificationByPID(c, otpVer.PID)
+	assert.Empty(t, err)
+	assert.Equal(t, res.PID, otpVer.PID)
 
-// 	otpVer.CountryCode = "91"
-// 	otpVer.Mobile = "9834649878"
-// 	otpVer.Medium = "whatsapp"
-// 	otpVer.Status = constants.OTP_STATUS.PENDING
+	t.Cleanup(func() {
+		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer.PID).Delete(&otpVer)
+	})
+}
 
-// 	w := httptest.NewRecorder()
-// 	c, _ := gin.CreateTestContext(w)
+/* -------------------------------------------------------------------------- */
+/*                          UpdateOTPVerification                         */
+/* -------------------------------------------------------------------------- */
+func TestUpdateOTPVerification(t *testing.T) {
+	configs.LoadConfigs()
+	var otpVer entities.OTPVerifications
+	var err error
 
-// 	gormDB, _ := database.Connection()
-// 	g := Gorm(gormDB)
+	otpVer.CountryCode = "91"
+	otpVer.Mobile = "9834649878"
+	otpVer.Medium = "whatsapp"
+	otpVer.Status = constants.OTP_STATUS.PENDING
 
-// 	otpVer, err = g.CreateOTPVerification(c, otpVer)
-// 	assert.Empty(t, err)
-// 	assert.NotEmpty(t, otpVer.PID)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 
-// 	otpVer.Status = constants.OTP_STATUS.FAILURE
-// 	otpVer, err = g.UpdateOTPVerification(c, otpVer)
-// 	assert.Empty(t, err)
-// 	assert.Equal(t, otpVer.Status, constants.OTP_STATUS.FAILURE)
+	gormDB, _ := database.InitDB()
+	g := Gorm(gormDB)
 
-// 	t.Cleanup(func() {
-// 		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer.PID).Delete(&otpVer)
-// 	})
-// }
+	otpVer, err = g.CreateOTPVerification(c, otpVer)
+	assert.Empty(t, err)
+	assert.NotEmpty(t, otpVer.PID)
+
+	otpVer.Status = constants.OTP_STATUS.FAILURE
+	otpVer, err = g.UpdateOTPVerification(c, otpVer)
+	assert.Empty(t, err)
+	assert.Equal(t, otpVer.Status, constants.OTP_STATUS.FAILURE)
+
+	t.Cleanup(func() {
+		gormDB.Model(&entities.OTPVerifications{}).Where("otp_verifications_pid = ?", otpVer.PID).Delete(&otpVer)
+	})
+}

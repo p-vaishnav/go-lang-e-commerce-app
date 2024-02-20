@@ -1,7 +1,7 @@
 package authsvc
 
 import (
-	"fmt"
+	"backend-commerce/configs"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -10,23 +10,23 @@ import (
 )
 
 func (s *authSvc) CreateToken(ctx *gin.Context) (string, error) {
-	var token *jwt.Token
+	var accessToken *jwt.Token
 	var tokenString string
 	var err error
 
-	var sampleSecretKey = []byte("SecretYouShouldHide")
-	fmt.Println(sampleSecretKey)
+	claims := UserClaims{
+		UserPID: "user_pid",
+		StandardClaims: jwt.StandardClaims{
+			IssuedAt:  time.Now().Unix(),
+			ExpiresAt: time.Now().Add(time.Duration(configs.Token.AccessExpiryTime) * time.Minute).Unix(),
+		},
+	}
 
-	token = jwt.New(jwt.SigningMethodEdDSA) // TODO: it didn't worked with it EdDSA
+	accessToken = jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	// claims
-	claims := token.Claims.(jwt.MapClaims)
-	claims["exp"] = time.Now().Add(time.Minute * 10)
-	claims["user_pid"] = "user_pid"
-
-	tokenString, err = token.SignedString(sampleSecretKey)
+	tokenString, err = accessToken.SignedString([]byte(configs.Token.AccessSecret))
 	if err != nil {
-		return tokenString, errors.Wrap(err, "[CreateToken]")
+		return tokenString, errors.Wrap(err, "[CreateToken][SignedString]")
 	}
 
 	return tokenString, err

@@ -23,6 +23,10 @@ func LoadConfigs() {
 	}
 
 	loadOTPConfig()
+	loadTokenConfig()
+	loadDBConfig()
+
+	fmt.Println("configs loaded successfully")
 }
 
 // TODO: I can write my own .env reader file
