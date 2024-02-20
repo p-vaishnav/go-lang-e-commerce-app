@@ -1,0 +1,35 @@
+TODO:
+    create an auth module, where in
+
+    otp
+    - /send_otp
+    - /verify_otp - insert token into the redis
+    - /resend_otp
+
+create token me vanda need to check
+
+TODO: godotenv and envconfig read about both of them
+    go through gorm documentation
+Notes
+/send_otp 
+    entry for the otp_verifications will be made
+    and return the opt_verifications pid for the same
+
+/resend_otp
+    increase the otp_coun + 1 and max_otp_count should be read from the configs
+    OTP_COUNT
+    OTP_VALID_TIME
+
+/verify_limit
+    check it has reached the verify_limit
+    VERIFY_OTP_LIMIT
+    
+    user
+    - /create_user
+    - /logout - remove token from the redis
+    - /forgot_password
+
+    graphql
+    - to get user details
+    - to get product details (this will be helpful beause less number of requests)
+ 
