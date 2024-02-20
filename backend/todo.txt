@@ -32,4 +32,6 @@ Notes
     graphql
     - to get user details
     - to get product details (this will be helpful beause less number of requests)
+
+I'll complete request respons logs
  
