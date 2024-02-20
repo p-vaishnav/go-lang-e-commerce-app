@@ -1,12 +1,12 @@
 TODO:
-    create an auth module, where in
+    create an auth module, where in - DONE
 
     otp
     - /send_otp
     - /verify_otp - insert token into the redis
     - /resend_otp
 
-create token me vanda need to check
+create token me vanda need to check - DONE
 
 TODO: godotenv and envconfig read about both of them
     go through gorm documentation

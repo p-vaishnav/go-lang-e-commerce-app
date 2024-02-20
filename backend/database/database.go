@@ -1,7 +1,9 @@
 package database
 
 import (
+	"backend-commerce/configs"
 	"database/sql"
+	"fmt"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -15,7 +17,12 @@ func InitDB() (*gorm.DB, *sql.DB) {
 	var dsn string // data source name
 	var err error
 
-	dsn = " host=" + " user=" + " passwaord=" + " dbname=" + " port=" + " sslmode=disable"
+	dsn = " host=" + configs.DB.Host +
+		" user=" + configs.DB.Username +
+		" password=" + configs.DB.Password +
+		" dbname=" + configs.DB.Database +
+		" port=" + configs.DB.Port +
+		" sslmode=disable"
 
 	PostgresDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -27,5 +34,6 @@ func InitDB() (*gorm.DB, *sql.DB) {
 		log.Fatal("") // ??
 	}
 
+	fmt.Println("connected to database successfully")
 	return PostgresDB, SqlDB
 }

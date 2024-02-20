@@ -1,6 +1,7 @@
 package authsvc
 
 import (
+	"backend-commerce/configs"
 	"net/http/httptest"
 	"testing"
 
@@ -9,6 +10,7 @@ import (
 )
 
 func TestVerifyToken(t *testing.T) {
+	configs.LoadConfigs()
 	var err error
 	var tokenString string
 
