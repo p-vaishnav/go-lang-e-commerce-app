@@ -14,8 +14,8 @@ type RequestResponseLogs struct {
 	UserPID            string    `gorm:"column:user_pid;not null;type:varchar(40)"`
 	Method             string    `gorm:"column:method;type:varchar(10)"`
 	ResponseCode       int       `gorm:"column:response_code"`
-	RequestBodyLength  int       `gorm:"column:request_body_length"`
-	ResponseBodyLength int       `gorm:"column:response_body_length"`
+	RequestBodyLength  int64     `gorm:"column:request_body_length"`
+	ResponseBodyLength int64     `gorm:"column:response_body_length"`
 	EndPoint           string    `gorm:"column:end_point"`
 	HostURL            string    `gorm:"column:host_url"`
 	ClientIP           string    `gorm:"column:client_ip"` //
