@@ -1,4 +1,5 @@
 TODO:
+    complete response logs
     create an auth module, where in - DONE
 
     otp

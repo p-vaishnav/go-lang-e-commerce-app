@@ -12,7 +12,7 @@ func InitRoutes() {
 
 	r = gin.Default()
 	r.Use(middlewares.TraceID())
-	r.Use() // TODO: add request_ressponse_logs
+	r.Use(middlewares.RequestResponseLogs()) // TODO: add request_response_logs
 
 	r.GET("/healthz", func(c *gin.Context) {
 		c.JSON(200, gin.H{
