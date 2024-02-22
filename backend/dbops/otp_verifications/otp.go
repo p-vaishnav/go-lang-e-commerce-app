@@ -16,8 +16,8 @@ import (
 type Interface interface {
 	CreateOTPVerification(*gin.Context, entities.OTPVerifications) (entities.OTPVerifications, error)
 	DeleteOTPVerification(*gin.Context, entities.OTPVerifications) error
-	FindOTPVerification(*gin.Context, string, string, string, string) (entities.OTPVerifications, error)
-	FindOTPVerificationByPID(*gin.Context, string) (entities.OTPVerifications, error)
+	ListOTPVerification(*gin.Context, string, string, string, string) (entities.OTPVerifications, error)
+	ListOTPVerificationByPID(*gin.Context, string) (entities.OTPVerifications, error)
 	UpdateOTPVerification(*gin.Context, entities.OTPVerifications) (entities.OTPVerifications, error)
 }
 
@@ -71,9 +71,9 @@ func (g *otpVerifications) DeleteOTPVerification(ctx *gin.Context, otpVer entiti
 }
 
 /* -------------------------------------------------------------------------- */
-/*                             FindOTPVerification                            */
+/*                             ListOTPVerification                            */
 /* -------------------------------------------------------------------------- */
-func (g *otpVerifications) FindOTPVerification(ctx *gin.Context, mobile string, email string, status string, medium string) (entities.OTPVerifications, error) {
+func (g *otpVerifications) ListOTPVerification(ctx *gin.Context, mobile string, email string, status string, medium string) (entities.OTPVerifications, error) {
 	var res entities.OTPVerifications
 	var err error
 
@@ -90,9 +90,9 @@ func (g *otpVerifications) FindOTPVerification(ctx *gin.Context, mobile string, 
 }
 
 /* -------------------------------------------------------------------------- */
-/*                          FindOTPVerificationByPID                          */
+/*                          ListOTPVerificationByPID                          */
 /* -------------------------------------------------------------------------- */
-func (g *otpVerifications) FindOTPVerificationByPID(ctx *gin.Context, pid string) (entities.OTPVerifications, error) {
+func (g *otpVerifications) ListOTPVerificationByPID(ctx *gin.Context, pid string) (entities.OTPVerifications, error) {
 	var res entities.OTPVerifications
 	var err error
 
@@ -100,7 +100,7 @@ func (g *otpVerifications) FindOTPVerificationByPID(ctx *gin.Context, pid string
 	db := g.DB.Session(&gorm.Session{})
 	err = db.Where("otp_verifications_pid = ?", pid).Take(&res).Error
 	if err != nil {
-		return res, errors.Wrap(err, "[FindOTPVerificationByPID]")
+		return res, errors.Wrap(err, "[ListOTPVerificationByPID]")
 	}
 
 	return res, err

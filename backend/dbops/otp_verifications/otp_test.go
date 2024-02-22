@@ -40,7 +40,7 @@ func TestCreateOTPVerification(t *testing.T) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                             FindOTPVerification                            */
+/*                             ListOTPVerification                            */
 /* -------------------------------------------------------------------------- */
 func TestFindOTPVerificationMobile(t *testing.T) {
 	configs.LoadConfigs()
@@ -76,7 +76,7 @@ func TestFindOTPVerificationMobile(t *testing.T) {
 	otpVer2, err = g.CreateOTPVerification(c, otpVer2)
 	assert.Empty(t, err)
 
-	res, err := g.FindOTPVerification(c, mobile, "", constants.OTP_STATUS.PENDING, "whatsapp")
+	res, err := g.ListOTPVerification(c, mobile, "", constants.OTP_STATUS.PENDING, "whatsapp")
 	assert.Empty(t, err)
 	assert.Equal(t, res.Provider, "meta")
 
@@ -118,7 +118,7 @@ func TestFindOTPVerificationEmail(t *testing.T) {
 	otpVer2, err = g.CreateOTPVerification(c, otpVer2)
 	assert.Empty(t, err)
 
-	res, err := g.FindOTPVerification(c, "", email, constants.OTP_STATUS.PENDING, "email")
+	res, err := g.ListOTPVerification(c, "", email, constants.OTP_STATUS.PENDING, "email")
 	assert.Empty(t, err)
 	assert.Equal(t, res.Provider, "ses")
 
@@ -150,7 +150,7 @@ func TestFindOTPVerificationByPID(t *testing.T) {
 	assert.Empty(t, err)
 	assert.NotEmpty(t, otpVer.PID)
 
-	res, err := g.FindOTPVerificationByPID(c, otpVer.PID)
+	res, err := g.ListOTPVerificationByPID(c, otpVer.PID)
 	assert.Empty(t, err)
 	assert.Equal(t, res.PID, otpVer.PID)
 
