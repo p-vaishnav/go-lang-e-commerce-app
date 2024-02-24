@@ -1,7 +1,15 @@
 package otp
 
-type otpHandler struct{}
+import (
+	"backend-commerce/services/otpsvc"
+)
 
-func Handler() *otpHandler {
-	return &otpHandler{}
+func Handler(otpSvc otpsvc.Interface) *otpHandler {
+	return &otpHandler{
+		otpSvc: otpSvc,
+	}
+}
+
+type otpHandler struct {
+	otpSvc otpsvc.Interface
 }
