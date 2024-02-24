@@ -7,24 +7,24 @@ import (
 )
 
 func (h *otpHandler) SendOTP(ctx *gin.Context) {
-	_, err := validateSendOTPReq(ctx)
+	req, err := validateSendOTPReq(ctx)
 	if err != nil {
 		backenderrors.Validation(ctx, err.Error())
 		return
 	}
 
-	// baseRes, data, err := h.otpSvc.SendOTP(ctx, req)
-	// if err != nil {
-	// 	// NOTE: might need to handle downstream errors as well, and slack notification should be also there
-	// 	backenderrors.InternalServer(ctx, err.Error())
-	// 	return
-	// }
+	baseRes, data, err := h.otpSvc.SendOTP(ctx, req)
+	if err != nil {
+		// NOTE: might need to handle downstream errors as well, and slack notification should be also there
+		backenderrors.InternalServer(ctx, err.Error())
+		return
+	}
 
-	// baseRes, err = sendOTPResTransformer(ctx, baseRes, data)
-	// if err != nil {
-	// 	backenderrors.InternalServer(ctx, err.Error())
-	// 	return
-	// }
+	baseRes, err = sendOTPResTransformer(ctx, baseRes, data)
+	if err != nil {
+		backenderrors.InternalServer(ctx, err.Error())
+		return
+	}
 }
 
 // 	utils.ReturnJSONStruct(ctx, baseRes)

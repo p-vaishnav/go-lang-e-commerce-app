@@ -15,3 +15,13 @@ var OTP_MEDIUM = map[string]bool{
 	"sms":      true,
 	"whatsapp": true,
 }
+
+var OTP_PROVIDER = struct {
+	MSG_91    string
+	SEND_GRID string
+	WHATS_APP string
+}{
+	MSG_91:    "msg91",
+	SEND_GRID: "send_grid",
+	WHATS_APP: "whats_app",
+}
