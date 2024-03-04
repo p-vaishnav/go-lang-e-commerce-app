@@ -7,6 +7,10 @@ import (
 	verifications "backend-commerce/dbops/otp_verifications"
 	"backend-commerce/entities"
 	"backend-commerce/services/otpsvc"
+	"bytes"
+	"encoding/json"
+	"io"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
@@ -199,4 +203,92 @@ func TestValidateEmailInvalid(t *testing.T) {
 	err = validateEmail(c, req)
 	assert.NotEmpty(t, err)
 	assert.Equal(t, err.Error(), "invalid email provided")
+}
+
+/* -------------------------------------------------------------------------- */
+/*                           TestValidateSendOTPReq                           */
+/* -------------------------------------------------------------------------- */
+
+func TestValidateSendOTPReqMobileSMS(t *testing.T) {
+	configs.LoadConfigs()
+
+	var req otpsvc.SendOTPReq
+	var err error
+
+	var mobile string
+	var medium string
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = &http.Request{}
+
+	mobile = "919834649878"
+	medium = "sms"
+
+	req.Mobile = mobile
+	req.Medium = medium
+
+	reqJson, _ := json.Marshal(&req)
+	c.Request.Body = io.NopCloser(bytes.NewBuffer([]byte(reqJson)))
+
+	req, err = validateSendOTPReq(c)
+	assert.Empty(t, err)
+	assert.Equal(t, req.Mobile, mobile)
+	assert.Equal(t, req.Medium, medium)
+}
+
+func TestValidateSendOTPReqMobileWhatsapp(t *testing.T) {
+	configs.LoadConfigs()
+
+	var req otpsvc.SendOTPReq
+	var err error
+
+	var mobile string
+	var medium string
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = &http.Request{}
+
+	mobile = "919834649878"
+	medium = "whatsapp"
+
+	req.Mobile = mobile
+	req.Medium = medium
+
+	reqJson, _ := json.Marshal(&req)
+	c.Request.Body = io.NopCloser(bytes.NewBuffer([]byte(reqJson)))
+
+	req, err = validateSendOTPReq(c)
+	assert.Empty(t, err)
+	assert.Equal(t, req.Mobile, mobile)
+	assert.Equal(t, req.Medium, medium)
+}
+
+func TestValidateSendOTPReqEmail(t *testing.T) {
+	configs.LoadConfigs()
+
+	var req otpsvc.SendOTPReq
+	var err error
+
+	var email string
+	var medium string
+
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Request = &http.Request{}
+
+	email = "v@gmail.com"
+	medium = "email"
+
+	req.Email = email
+	req.Medium = medium
+
+	reqJson, _ := json.Marshal(&req)
+	c.Request.Body = io.NopCloser(bytes.NewBuffer([]byte(reqJson)))
+
+	req, err = validateSendOTPReq(c)
+	assert.Empty(t, err)
+	assert.Equal(t, req.Email, email)
+	assert.Equal(t, req.Medium, medium)
 }

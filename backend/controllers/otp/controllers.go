@@ -1,7 +1,8 @@
 package otp
 
 import (
-	"backend-commerce/backenderrors"
+	backenderrors "backend-commerce/backend_errors"
+	"backend-commerce/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,37 +26,36 @@ func (h *otpHandler) SendOTP(ctx *gin.Context) {
 		backenderrors.InternalServer(ctx, err.Error())
 		return
 	}
+
+	utils.ReturnJSONStruct(ctx, baseRes)
 }
 
-// 	utils.ReturnJSONStruct(ctx, baseRes)
-// }
+func (h *otpHandler) ResendOTP(ctx *gin.Context) {
+	err := validateResendOTPReq(ctx)
+	if err != nil {
+		backenderrors.Validation(ctx, err.Error())
+		return
+	}
 
-// func (h *verifyHandler) ResendOTP(ctx *gin.Context) {
-// 	err := validateResendOTPReq(ctx)
-// 	if err != nil {
-// 		zooperrors.Validation(ctx, err.Error())
-// 		return
-// 	}
+	// baseRes, data, err := h.verificationSvc.ResendOTP(ctx)
+	// if baseRes.StatusCode != http.StatusOK {
+	// 	zooperrors.HandleServiceCodes(ctx, baseRes)
+	// 	return
+	// }
 
-// 	baseRes, data, err := h.verificationSvc.ResendOTP(ctx)
-// 	if baseRes.StatusCode != http.StatusOK {
-// 		zooperrors.HandleServiceCodes(ctx, baseRes)
-// 		return
-// 	}
+	// if err != nil {
+	// 	zooperrors.InternalServer(ctx, err.Error())
+	// 	return
+	// }
 
-// 	if err != nil {
-// 		zooperrors.InternalServer(ctx, err.Error())
-// 		return
-// 	}
+	// baseRes, err = resendOTPTransformer(ctx, baseRes, data)
+	// if err != nil {
+	// 	zooperrors.InternalServer(ctx, err.Error())
+	// 	return
+	// }
 
-// 	baseRes, err = resendOTPTransformer(ctx, baseRes, data)
-// 	if err != nil {
-// 		zooperrors.InternalServer(ctx, err.Error())
-// 		return
-// 	}
-
-// 	utils.ReturnJSONStruct(ctx, baseRes)
-// }
+	// utils.ReturnJSONStruct(ctx, baseRes)
+}
 
 // func (h *verifyHandler) VerifyOTP(ctx *gin.Context) {
 // 	req, err := validateVerifyOTPReq(ctx)
