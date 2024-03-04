@@ -29,7 +29,7 @@ func InitRoutes() {
 					"message": "send-otp-success",
 				})
 			})
-			otpGroup.POST("resend_otp", func(c *gin.Context) {
+			otpGroup.POST("resend_otp/:pid", func(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"message": "resend-otp-success",
 				})
